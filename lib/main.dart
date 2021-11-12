@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:healthe/pages/authenticaton_page.dart';
+import 'package:healthe/pages/inbox.dart';
 import 'package:healthe/pages/loading_page.dart';
 import 'package:healthe/pages/login_page.dart';
 import 'package:healthe/pages/registration_doctor.dart';
@@ -25,7 +26,6 @@ void main() {
       DoctorRegistrationPage.id : (context) => DoctorRegistrationPage(),
       UserRegistration.id : (context) => UserRegistration(),
       UserDashBoard.id : (context) => UserDashBoard(),
-
     },
   ));
 }
