@@ -1,7 +1,10 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:healthe/constants/colors.dart';
 import 'package:healthe/pages/login_page.dart';
 import 'package:healthe/pages/registration_page.dart';
+import 'package:healthe/pages/user_dashboard_page.dart';
+import 'package:healthe/util/firebase_authentication.dart';
 import 'package:healthe/widgets/buttons.dart';
 import 'package:healthe/widgets/text_field.dart';
 
@@ -14,6 +17,10 @@ class AuthenticationPage extends StatefulWidget {
 }
 
 class _AuthenticationPageState extends State<AuthenticationPage> {
+  @override
+  void initState() {
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +46,12 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                   child: AuthenticationPageButton(
                       onPressed: (){
                         //TODO function of login button
-                        Navigator.pushNamed(context, LoginPage.id);
+                        if(auth.currentUser != null){
+                          Navigator.pushNamed(context, UserDashBoard.id);
+                        }
+                        else{
+                          Navigator.pushNamed(context, LoginPage.id);
+                        }
                       }
                       , label: 'Log in',colour: Colors.white,),
                 ),
@@ -49,7 +61,12 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                   child: AuthenticationPageButton(
                       onPressed: (){
                         //TODO function of registeration button
-                        Navigator.pushNamed(context, RegistrationPage.id);
+                        if(auth.currentUser != null){
+                          Navigator.pushNamed(context, UserDashBoard.id);
+                        }
+                        else{
+                          Navigator.pushNamed(context, RegistrationPage.id);
+                        }
                       }, label: 'Register',colour: myTurqoise,),
                 ),
               ],

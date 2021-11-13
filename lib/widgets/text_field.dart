@@ -23,7 +23,7 @@ class _EmailTextfieldState extends State<EmailTextfield> {
       decoration: InputDecoration(
         label: Container(child: Padding(
           padding: const EdgeInsets.all(3.0),
-          child: Text('email'),
+          child: Text(widget.label),
         ),decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(8)),),
         filled: true,
         fillColor: Colors.white,

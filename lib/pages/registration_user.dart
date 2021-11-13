@@ -1,5 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:email_auth/email_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:healthe/constants/colors.dart';
+import 'package:healthe/pages/user_dashboard_page.dart';
+import 'package:healthe/util/firebase_authentication.dart';
 import 'package:healthe/widgets/buttons.dart';
 import 'package:healthe/widgets/text_field.dart';
 
@@ -13,6 +17,33 @@ class UserRegistration extends StatefulWidget {
 }
 
 class _UserRegistrationState extends State<UserRegistration> {
+  String _userRegisterEmail ="";
+  String _userRegisterUsername ="";
+  String _userRegisterPass ="";
+  String _userRegisterConPass ="";
+  String _userRegisterOtp ="";
+  bool _isOTPcorrect = false;
+  late EmailAuth emailAuth;
+
+  // send OTP function
+  void sendOtp() async {
+    bool result = await emailAuth.sendOtp(
+        recipientMail: _userRegisterEmail, otpLength: 5
+    );
+  }
+  bool verify() {
+    print(emailAuth.validateOtp(
+        recipientMail: _userRegisterEmail,
+        userOtp: _userRegisterOtp));
+    return emailAuth.validateOtp(
+        recipientMail: _userRegisterEmail,
+        userOtp: _userRegisterOtp);
+  }
+  @override
+  void initState() {
+    super.initState();
+    emailAuth =  new EmailAuth(sessionName: "register to health-e");
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,12 +74,18 @@ class _UserRegistrationState extends State<UserRegistration> {
                     padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
                     child: Row(
                       children: [
-                        Expanded(child: EmailTextfield(onChanged: (email){}, label: 'Email'),flex: 5,),
+                        Expanded(child: EmailTextfield(onChanged: (email){
+                          //TODO Email Textbox Function
+                          _userRegisterEmail = email;
+                        }, label: 'Email'),flex: 5,),
                         SizedBox(width: 10,),
                         Expanded(
                           flex: 1,
                           child: RawMaterialButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              //TODO send OTP button
+                              sendOtp();
+                            },
                             elevation: 2.0,
                             fillColor: myTurqoise,
                             child: Column(
@@ -66,21 +103,51 @@ class _UserRegistrationState extends State<UserRegistration> {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
-                    child: PasswordTextField(onChanged: (password){}, label: 'Password'),
+                    child: EmailTextfield(onChanged: (username){
+                      //TODO username textfield function
+                      _userRegisterUsername = username;
+                    }, label: 'Username'),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
-                    child: PasswordTextField(onChanged: (password){}, label: 'Confirm password'),
+                    child: PasswordTextField(onChanged: (password){
+                      //TODO password
+                      _userRegisterPass = password;
+                    }, label: 'Password'),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
+                    child: PasswordTextField(onChanged: (password){
+                      //TODO confirm password
+                      _userRegisterConPass = password;
+                    }, label: 'Confirm password'),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 18,vertical: 15),
-                    child: NumberTextField(onChanged: (otp){}, label: 'OTP'),
+                    child: NumberTextField(onChanged: (otp){
+                      //TODO otp textfield
+                      _userRegisterOtp = otp;
+                    }, label: 'OTP'),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 18,vertical: 15),
-                    child: AuthenticationPageButton(onPressed: (){}, label: 'Submit', colour: myTurqoise),
+                    child: AuthenticationPageButton(onPressed: (){
+                      //TODO Submit button
+                      _isOTPcorrect = verify();
+                      if(_isOTPcorrect && _userRegisterPass==_userRegisterConPass){
+                        auth.createUserWithEmailAndPassword(email: _userRegisterEmail, password: _userRegisterPass)
+                            .then((value) => FirebaseFirestore.instance.collection('UserData').doc(_userRegisterEmail).set({
+                          "email" : _userRegisterEmail,
+                          "username" : _userRegisterUsername,
+                          "role" : "user",
+                        }),
+                        );
+                        Navigator.pushNamed(context, UserDashBoard.id);
+                      }
+
+                    }, label: 'Submit', colour: myTurqoise),
                   ),
-                  Text('error message',style: TextStyle(color: Colors.white,fontSize: 20),),
+                  Text('',style: TextStyle(color: Colors.white,fontSize: 20),),
                   SizedBox(height: 20,),
                 ],
               )

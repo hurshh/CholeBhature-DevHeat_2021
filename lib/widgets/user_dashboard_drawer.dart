@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:healthe/constants/colors.dart';
+import 'package:healthe/pages/authenticaton_page.dart';
 import 'package:healthe/pages/user_dashboard_page.dart';
+import 'package:healthe/util/firebase_authentication.dart';
 
 class userDashBoard extends StatefulWidget {
   const userDashBoard({Key? key}) : super(key: key);
@@ -45,6 +47,8 @@ class _userDashBoardState extends State<userDashBoard> {
             ),
             onTap: (){
               //TODO drawer Logout function
+              auth.signOut();
+              Navigator.pushNamed(context, AuthenticationPage.id);
             },
           ),
           ListTile(

@@ -1,10 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:healthe/constants/colors.dart';
+import 'package:healthe/pages/doctor_dashboard.dart';
 import 'package:healthe/pages/registration_page.dart';
+import 'package:healthe/pages/user_dashboard_page.dart';
+import 'package:healthe/util/firebase_authentication.dart';
+import 'package:healthe/util/user_data.dart';
 import 'package:healthe/widgets/buttons.dart';
 import 'package:healthe/widgets/text_field.dart';
 
@@ -17,6 +23,15 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  String _loginEmail = "";
+  String _loginPassword = "";
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,6 +65,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: EmailTextfield(
                     onChanged: (email){
                       //TODO function of login email
+                      _loginEmail = email;
                     },
                     label: 'Email',),
                 ),
@@ -58,14 +74,44 @@ class _LoginPageState extends State<LoginPage> {
                   child: PasswordTextField(
                       onChanged: (password){
                         //TODO function of login password
+                        _loginPassword = password;
                       },
                       label: 'Password'),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(18, 34, 18, 20),
                   child: AuthenticationPageButton(
-                    onPressed: (){
+                    onPressed: () async {
                       //TODO function of Log in button
+                      try {
+                        UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+                            email: _loginEmail,
+                            password: _loginPassword
+                        );
+                        print('Login successful');
+                        FirebaseFirestore.instance.collection('UserData').doc(_loginEmail).get().then((value){
+                          LoggedInUserRole = value["role"];
+                          LoggedInUserName = value["username"];
+                          if(LoggedInUserRole == "doctor"){
+                            DocField = value["docfield"];
+                          }
+                          print(LoggedInUserRole);
+                        });
+                        if(LoggedInUserRole == "doctor"){
+                          Navigator.pushNamed(context, DoctorDashBoard.id);
+                        }
+                        else{
+                          Navigator.pushNamed(context, UserDashBoard.id);
+                        }
+                      } on FirebaseAuthException catch (e) {
+                        //TODO write login error messages
+                        if (e.code == 'user-not-found') {
+                          print('No user found for that email.');
+                        } else if (e.code == 'wrong-password') {
+                          print('Wrong password provided for that user.');
+                        }
+                      }
+
                     }, label: 'Log in',colour: myTurqoise,),
                 ),
                 Row(

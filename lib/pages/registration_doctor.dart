@@ -1,5 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:email_auth/email_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:healthe/constants/colors.dart';
+import 'package:healthe/pages/doctor_dashboard.dart';
+import 'package:healthe/util/firebase_authentication.dart';
 import 'package:healthe/widgets/buttons.dart';
 import 'package:healthe/widgets/text_field.dart';
 
@@ -12,6 +16,35 @@ class DoctorRegistrationPage extends StatefulWidget {
 }
 
 class _DoctorRegistrationPageState extends State<DoctorRegistrationPage> {
+  String _docEmail = '';
+  String _docUsername = '';
+  String _docPass = '';
+  String _docConPas = '';
+  String _docDMC = '';
+  String _docOTP = '';
+  String _chosenValue = 'Psychiatrist';
+  late EmailAuth emailAuth;
+  bool _isOtp = false;
+
+  void sendOtp() async {
+    bool result = await emailAuth.sendOtp(
+        recipientMail: _docEmail, otpLength: 5
+    );
+  }
+  bool verify() {
+    print(emailAuth.validateOtp(
+        recipientMail: _docEmail,
+        userOtp: _docOTP));
+    return emailAuth.validateOtp(
+        recipientMail: _docEmail,
+        userOtp: _docOTP);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    emailAuth =  new EmailAuth(sessionName: "register to health-e");
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,12 +75,18 @@ class _DoctorRegistrationPageState extends State<DoctorRegistrationPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
                   child: Row(
                     children: [
-                      Expanded(child: EmailTextfield(onChanged: (email){}, label: 'Email'),flex: 5,),
+                      Expanded(child: EmailTextfield(onChanged: (email){
+                        //TODO doc email function
+                        _docEmail = email;
+                      }, label: 'Email'),flex: 5,),
                       SizedBox(width: 10,),
                       Expanded(
                         flex: 1,
                         child: RawMaterialButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            //TODO send OTP button
+                            sendOtp();
+                          },
                           elevation: 2.0,
                           fillColor: myTurqoise,
                           child: Column(
@@ -65,25 +104,106 @@ class _DoctorRegistrationPageState extends State<DoctorRegistrationPage> {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
-                  child: PasswordTextField(onChanged: (password){}, label: 'Password'),
+                  child: EmailTextfield(onChanged: (username){
+                    //TODO username textfield function
+                    _docUsername = username;
+                  }, label: 'Username'),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
-                  child: PasswordTextField(onChanged: (password){}, label: 'Confirm password'),
+                  child: PasswordTextField(onChanged: (password){
+                    //TODO doc password
+                    _docPass = password;
+                  }, label: 'Password'),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
+                  child: PasswordTextField(onChanged: (password){
+                    //TODO doc confirm pass
+                    _docConPas = password;
+                  }, label: 'Confirm password'),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 18,vertical: 15),
-                  child: NumberTextField(onChanged: (dmcNumber){}, label: 'DMC numer'),
+                  child: NumberTextField(onChanged: (dmcNumber){
+                    //TODO doc DMC number
+                    _docDMC = dmcNumber;
+                  }, label: 'DMC numer'),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 18,vertical: 15),
-                  child: NumberTextField(onChanged: (otp){}, label: 'OTP'),
+                  child: NumberTextField(onChanged: (otp){
+                    //TODO doc otp
+                    _docOTP = otp;
+                  }, label: 'OTP'),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 18,vertical: 15),
-                  child: AuthenticationPageButton(onPressed: (){}, label: 'Submit', colour: myTurqoise),
+                  child: Container(
+                    width: double.infinity,
+                    height: 60,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(15))
+                    ),
+                    child: Center(
+                      child: DropdownButton(
+                        focusColor:Colors.white,
+                        dropdownColor: Colors.white,
+                        value: _chosenValue,
+                        //elevation: 5,
+                        style: TextStyle(color: Colors.white),
+                        iconEnabledColor:Colors.black,
+                        items: <String>[
+                          'Psychiatrist',
+                          'Physicians',
+                          'Dermatologists',
+                          'Ophthalmologist',
+                          'Pediatricians',
+                          'Gynecologist',
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value,style:TextStyle(color:Colors.black,fontSize: 18),),
+                          );
+                        }).toList(),
+                        hint:Text(
+                          "                                                                                   ",
+
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            _chosenValue = value.toString();
+                          });
+                        },
+                      ),
+                    ),
+                  ),
                 ),
-                Text('error message',style: TextStyle(color: Colors.white,fontSize: 20),),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 18,vertical: 15),
+                  child: AuthenticationPageButton(onPressed: (){
+                    //TODO submit button
+                    _isOtp = verify();
+                    if(_isOtp && _docPass==_docConPas){
+                      auth.createUserWithEmailAndPassword(email: _docEmail, password: _docPass)
+                          .then((value) => FirebaseFirestore.instance.collection('UserData').doc(_docEmail).set({
+                        "email" : _docEmail,
+                        "username" : _docUsername,
+                        "role" : "doctor",
+                        "dmc" : _docDMC,
+                        "docfield" : _chosenValue,
+                      }),);
+                      Navigator.pushNamed(context, DoctorDashBoard.id);
+                    }
+
+                  }, label: 'Submit', colour: myTurqoise),
+                ),
+                Text('',style: TextStyle(color: Colors.white,fontSize: 20),),
                 SizedBox(height: 20,),
               ],
             )

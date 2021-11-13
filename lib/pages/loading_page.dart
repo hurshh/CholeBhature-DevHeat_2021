@@ -1,9 +1,12 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:healthe/constants/colors.dart';
 import 'package:healthe/pages/authenticaton_page.dart';
+import 'package:healthe/pages/user_dashboard_page.dart';
+import 'package:healthe/util/firebase_authentication.dart';
 class LoadingPage extends StatefulWidget {
   static String id = 'Loding Page';
   const LoadingPage({Key? key}) : super(key: key);
@@ -31,7 +34,8 @@ class _LoadingPageState extends State<LoadingPage> with SingleTickerProviderStat
     });})..addStatusListener((status) {
       if(status == AnimationStatus.completed){
         print('animation completed');
-        Navigator.pushNamed(context, AuthenticationPage.id);
+        Firebase.initializeApp();
+          Navigator.pushNamed(context, AuthenticationPage.id);
     }});
     _controller.forward();
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:healthe/pages/authenticaton_page.dart';
+import 'package:healthe/pages/doctor_dashboard.dart';
 import 'package:healthe/pages/inbox.dart';
 import 'package:healthe/pages/loading_page.dart';
 import 'package:healthe/pages/login_page.dart';
@@ -17,7 +18,7 @@ void main() {
         centerTitle: true,
       )
     ),
-    initialRoute: UserDashBoard.id,
+    initialRoute: LoadingPage.id,
     routes: {
       LoadingPage.id : (context) => LoadingPage(),
       AuthenticationPage.id : (context) => AuthenticationPage(),
@@ -26,6 +27,8 @@ void main() {
       DoctorRegistrationPage.id : (context) => DoctorRegistrationPage(),
       UserRegistration.id : (context) => UserRegistration(),
       UserDashBoard.id : (context) => UserDashBoard(),
+      DoctorDashBoard.id : (context) => DoctorDashBoard(),
+
     },
   ));
 }
