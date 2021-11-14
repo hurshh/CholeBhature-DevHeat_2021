@@ -8,4 +8,4 @@ this app serves as a quick link between patients and doctors around world and pu
 - FireBase authentication to store and manage accounts
 - Firestore to keep track of user profiles and chat data
 
--![alt text](https://i.imgur.com/H3qg6nJ.png)
+![alt text](https://i.imgur.com/H3qg6nJ.png) ![alt text](https://i.imgur.com/H3qg6nJ.png)
