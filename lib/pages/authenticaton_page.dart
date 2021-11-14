@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:healthe/constants/colors.dart';
@@ -5,8 +6,11 @@ import 'package:healthe/pages/login_page.dart';
 import 'package:healthe/pages/registration_page.dart';
 import 'package:healthe/pages/user_dashboard_page.dart';
 import 'package:healthe/util/firebase_authentication.dart';
+import 'package:healthe/util/user_data.dart';
 import 'package:healthe/widgets/buttons.dart';
 import 'package:healthe/widgets/text_field.dart';
+
+import 'doctor_dashboard.dart';
 
 class AuthenticationPage extends StatefulWidget {
   static String id = 'Authentication Page';
@@ -17,6 +21,8 @@ class AuthenticationPage extends StatefulWidget {
 }
 
 class _AuthenticationPageState extends State<AuthenticationPage> {
+  String? get _loginEmail => null;
+
   @override
   void initState() {
     super.initState();
@@ -47,7 +53,12 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                       onPressed: (){
                         //TODO function of login button
                         if(auth.currentUser != null){
-                          Navigator.pushNamed(context, UserDashBoard.id);
+                          if(LoggedInUserRole == "doctor"){
+                            Navigator.pushNamed(context, DoctorDashBoard.id);
+                          }
+                          else{
+                            Navigator.pushNamed(context, UserDashBoard.id);
+                          }
                         }
                         else{
                           Navigator.pushNamed(context, LoginPage.id);
@@ -62,7 +73,12 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                       onPressed: (){
                         //TODO function of registeration button
                         if(auth.currentUser != null){
-                          Navigator.pushNamed(context, UserDashBoard.id);
+                          if(LoggedInUserRole == "doctor"){
+                            Navigator.pushNamed(context, DoctorDashBoard.id);
+                          }
+                          else{
+                            Navigator.pushNamed(context, UserDashBoard.id);
+                          }
                         }
                         else{
                           Navigator.pushNamed(context, RegistrationPage.id);

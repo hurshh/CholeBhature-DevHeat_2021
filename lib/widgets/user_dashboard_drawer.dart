@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:healthe/constants/colors.dart';
+import 'package:healthe/pages/about_page.dart';
 import 'package:healthe/pages/authenticaton_page.dart';
 import 'package:healthe/pages/user_dashboard_page.dart';
 import 'package:healthe/util/firebase_authentication.dart';
+import 'package:healthe/util/user_data.dart';
 
 class userDashBoard extends StatefulWidget {
   const userDashBoard({Key? key}) : super(key: key);
@@ -24,7 +26,7 @@ class _userDashBoardState extends State<userDashBoard> {
                 color: AccentMyPink,
                 borderRadius: BorderRadius.all(Radius.circular(20)),
               ),
-              child: Container(child: Center(child: Text('quasarhrsh@gmail.com',style: TextStyle(color: activeColor,fontSize: 26),)),height: 50,)),
+              child: Container(child: Center(child: Text(LoggedInUserName,style: TextStyle(color: activeColor,fontSize: 26),)),height: 50,)),
           ListTile(
             title: Row(
               children: [
@@ -61,6 +63,7 @@ class _userDashBoardState extends State<userDashBoard> {
             ),
             onTap: (){
               //TODO drawer About function
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> About()));
             },
           ),
         ],

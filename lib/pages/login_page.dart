@@ -94,6 +94,7 @@ class _LoginPageState extends State<LoginPage> {
                           LoggedInUserName = value["username"];
                           if(LoggedInUserRole == "doctor"){
                             DocField = value["docfield"];
+                            Navigator.pushNamed(context, DoctorDashBoard.id);
                           }
                           print(LoggedInUserRole);
                         });
