@@ -9,9 +9,9 @@ this app serves as a quick link between patients and doctors around world and pu
 - Firestore to keep track of user profiles and chat data
 
 ![alt text](https://i.imgur.com/H3qg6nJ.png) ![alt text](https://i.imgur.com/DmDu30X.png)<br />
-here are front and login page of app Login app directs Doctors and users to their respective UI.
+here are front and login page of app Login app directs Doctors and users to their respective UI.<br /><br />
 ![alt text](https://i.imgur.com/TnLVTB2.png)<br />
-we have used 
+we have used <br />
 - otp to restrict spam accounts
 - dmc number to authenticate doctor
 ![alt text](https://i.imgur.com/gCwBrYo.png) 
