@@ -14,4 +14,5 @@ here are front and login page of app Login app directs Doctors and users to thei
 we have used <br />
 - otp to restrict spam accounts
 - dmc number to authenticate doctor
+<br /><br />
 ![alt text](https://i.imgur.com/gCwBrYo.png) 
