@@ -15,4 +15,6 @@ we have used <br />
 - otp to restrict spam accounts
 - dmc number to authenticate doctor
 <br /><br />
-![alt text](https://i.imgur.com/gCwBrYo.png) 
+![alt text](https://i.imgur.com/gCwBrYo.png) ![image](https://user-images.githubusercontent.com/75796695/141695211-31c16f49-297e-49d6-b700-b077ffb4f4dd.png)
+<br /><br />
+- here patient can choose from fields and write his problem to doctor
