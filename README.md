@@ -10,8 +10,8 @@ this app serves as a quick link between patients and doctors around world and pu
 
 ![alt text](https://i.imgur.com/H3qg6nJ.png) ![alt text](https://i.imgur.com/DmDu30X.png)
 here are front and login page of app Login app directs Doctors and users to their respective UI.
-![alt text](https://i.imgur.com/TnLVTB2.png)
+![alt text](https://i.imgur.com/TnLVTB2.png)<br />
 we have used 
 - otp to restrict spam accounts
 - dmc number to authenticate doctor
-![alt text](https://i.imgur.com/gCwBrYo.png) ![image](https://user-images.githubusercontent.com/75796695/141695033-4701b95d-6520-403b-877f-00c1b701a843.png)
+![alt text](https://i.imgur.com/gCwBrYo.png) 
