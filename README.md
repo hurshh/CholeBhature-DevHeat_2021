@@ -1,5 +1,5 @@
 # HEALTH - E
-<img src="https://i.imgur.com/Psax3Iq.png" width="50" height="50"/> 
+<img src="https://i.imgur.com/Psax3Iq.png" width="100" height="100"/> 
 HEALTH-E is a Flutter app developed by harsh rao and parth thapliyal as part of devHeat hackathon organized by iiitsurat
 this app serves as a quick link between patients and doctors around world and puts you in touch with a doctor which can help patient in early diagnosis of the situation
 
