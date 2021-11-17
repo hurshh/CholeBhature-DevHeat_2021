@@ -19,6 +19,7 @@ void main() {
         centerTitle: true,
       )
     ),
+    debugShowCheckedModeBanner: false,
     initialRoute: LoadingPage.id,
     routes: {
       LoadingPage.id : (context) => LoadingPage(),

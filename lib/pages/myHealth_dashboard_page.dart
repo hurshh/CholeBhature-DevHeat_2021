@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:healthe/constants/colors.dart';
+import 'package:healthe/util/firebase_authentication.dart';
 import 'package:healthe/widgets/buttons.dart';
 
 class MyHealth extends StatefulWidget {
@@ -10,6 +11,10 @@ class MyHealth extends StatefulWidget {
 }
 
 class _MyHealthState extends State<MyHealth> {
+  String _age = "";
+  String _weight = "";
+  String _height = "";
+  String _medicalHistory = "";
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -34,7 +39,7 @@ class _MyHealthState extends State<MyHealth> {
                     padding: const EdgeInsets.all(8.0),
                     child: TextField(
                       onChanged: (subject){
-
+                        _age = subject;
                       },
                       decoration: InputDecoration(
                         border: OutlineInputBorder(borderSide: BorderSide(color: Colors.black),borderRadius: BorderRadius.circular(12)),
@@ -55,7 +60,7 @@ class _MyHealthState extends State<MyHealth> {
                     padding: const EdgeInsets.all(8.0),
                     child: TextField(
                       onChanged: (subject){
-
+                        _weight = subject;
                       },
                       decoration: InputDecoration(
                         border: OutlineInputBorder(borderSide: BorderSide(color: Colors.black),borderRadius: BorderRadius.circular(12)),
@@ -78,7 +83,7 @@ class _MyHealthState extends State<MyHealth> {
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
                   onChanged: (subject){
-
+                    _height = subject;
                   },
                   decoration: InputDecoration(
                     border: OutlineInputBorder(borderSide: BorderSide(color: Colors.black),borderRadius: BorderRadius.circular(12)),
@@ -98,6 +103,7 @@ class _MyHealthState extends State<MyHealth> {
               minLines: 8,
               maxLines: 18,
               onChanged: (description){
+                _medicalHistory = description;
               },
               decoration: InputDecoration(
                 border: OutlineInputBorder(borderSide: BorderSide(color: Colors.black),borderRadius: BorderRadius.circular(12)),
@@ -107,7 +113,16 @@ class _MyHealthState extends State<MyHealth> {
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: AuthenticationPageButton(onPressed: (){}, label: 'Submit', colour: myTurqoise),
+            child: AuthenticationPageButton(onPressed: (){
+              print(_medicalHistory);
+              firestore.collection('UserData').doc(auth.currentUser?.email.toString()).collection('report').doc('report').set(
+                  {
+                    "age" : _age,
+                    "weight" : _weight,
+                    "height" : _height,
+                    "history" : _medicalHistory,
+                  });
+            }, label: 'Submit', colour: myTurqoise),
           )
         ],
       ),

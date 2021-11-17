@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:healthe/constants/colors.dart';
+import 'package:healthe/pages/report.dart';
 import 'package:healthe/util/firebase_authentication.dart';
 import 'package:healthe/util/user_data.dart';
 
@@ -25,7 +26,7 @@ class _DoctorHomeState extends State<DoctorHome> {
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text('Welcome Doctor',style: TextStyle(fontSize: 40,fontWeight: FontWeight.bold),),
+            child: Text('Welcome Doctor,',style: TextStyle(fontSize: 40,fontWeight: FontWeight.bold),),
           ),
           QueryStream()
         ],
@@ -110,7 +111,7 @@ class _QueriesState extends State<Queries> {
               padding: const EdgeInsets.all(8.0),
               child: Row(
                 children: [
-                  Text('user : ${widget.user}',style: TextStyle(fontSize: 20),),
+                  FlatButton(child: Text('user : ${widget.user}',style: TextStyle(fontSize: 20),),onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => report(email: widget.senderEmail)));},),
                   IconButton(onPressed: (){
                     //TODO send funtion
                     var now = DateTime.now();
